@@ -23,10 +23,14 @@ class App extends React.Component {
     const data = await api_call.json();
     if (city && country) {
       this.setState({
-        temperature: data.main.temp,
         city: data.name,
         country: data.sys.country,
         humidity: data.main.humidity,
+        temperature: data.main.temp,
+        minimumTemperature: data.main.temp_min,
+        maximumTemperature: data.main.temp_max,
+        windSpeed: data.wind.speed,
+        cloudCoverage: data.clouds.all,
         description: data.weather[0].description,
         error: ""
       });
@@ -37,6 +41,10 @@ class App extends React.Component {
         country: undefined,
         humidity: undefined,
         description: undefined,
+        minimumTemperature: undefined,
+        maximumTemperature: undefined,
+        windSpeed: undefined,
+        cloudCoverage: undefined,
         error: "Please enter the values."
       });
     }
@@ -59,6 +67,10 @@ class App extends React.Component {
                     city={this.state.city}
                     country={this.state.country}
                     description={this.state.description}
+                    minimumTemperature={this.state.minimumTemperature}
+                    maximumTemperature={this.state.maximumTemperature}
+                    windSpeed={this.state.windSpeed}
+                    cloudCoverage={this.state.cloudCoverage}
                     error={this.state.error}
                   />
                 </div>
