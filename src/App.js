@@ -4,6 +4,20 @@ import Titles from "./components/Titles";
 import Form from "./components/Form";
 import Weather from "./components/Weather";
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+import { faBullseye } from '@fortawesome/free-solid-svg-icons'
+import { faThermometerQuarter } from '@fortawesome/free-solid-svg-icons'
+import { faThermometerThreeQuarters } from '@fortawesome/free-solid-svg-icons'
+import { faWind } from '@fortawesome/free-solid-svg-icons'
+import { faTint } from '@fortawesome/free-solid-svg-icons'
+import { faCloud } from '@fortawesome/free-solid-svg-icons'
+import { faCarSide } from '@fortawesome/free-solid-svg-icons'
+
+
+library.add(faMapMarkerAlt, faBullseye, faThermometerQuarter, faThermometerThreeQuarters, faWind, faTint, faCloud, faCarSide)
+
 const API_KEY = "64b5c52024ca083e556dab9c0cd5e153";
 
 class App extends React.Component {
@@ -23,10 +37,14 @@ class App extends React.Component {
     const data = await api_call.json();
     if (city && country) {
       this.setState({
-        temperature: data.main.temp,
         city: data.name,
         country: data.sys.country,
         humidity: data.main.humidity,
+        temperature: data.main.temp,
+        minimumTemperature: data.main.temp_min,
+        maximumTemperature: data.main.temp_max,
+        windSpeed: data.wind.speed,
+        cloudCoverage: data.clouds.all,
         description: data.weather[0].description,
         error: ""
       });
@@ -37,6 +55,10 @@ class App extends React.Component {
         country: undefined,
         humidity: undefined,
         description: undefined,
+        minimumTemperature: undefined,
+        maximumTemperature: undefined,
+        windSpeed: undefined,
+        cloudCoverage: undefined,
         error: "Please enter the values."
       });
     }
@@ -46,22 +68,24 @@ class App extends React.Component {
       <div>
         <div className="wrapper">
           <div className="main">
-            <div className="row">
-              <div className="container">
-                <div className="col-xs-12 col-lg-5 title-container">
-                  <Titles />
-                </div>
-                <div className="col-xs-12 col-lg-7 form-container">
-                  <Form getWeather={this.getWeather} />
-                  <Weather 
-                    temperature={this.state.temperature} 
-                    humidity={this.state.humidity}
-                    city={this.state.city}
-                    country={this.state.country}
-                    description={this.state.description}
-                    error={this.state.error}
-                  />
-                </div>
+            <div id="weather-app">
+              <div className="title-container">
+                <Titles />
+              </div>
+              <div className="data-container">
+                <Form getWeather={this.getWeather} />
+                <Weather 
+                  temperature={this.state.temperature} 
+                  humidity={this.state.humidity}
+                  city={this.state.city}
+                  country={this.state.country}
+                  description={this.state.description}
+                  minimumTemperature={this.state.minimumTemperature}
+                  maximumTemperature={this.state.maximumTemperature}
+                  windSpeed={this.state.windSpeed}
+                  cloudCoverage={this.state.cloudCoverage}
+                  error={this.state.error}
+                />
               </div>
             </div>
           </div>
